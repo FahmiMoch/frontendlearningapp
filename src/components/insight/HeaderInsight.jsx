@@ -33,10 +33,8 @@ export default function HeaderInsight() {
   return (
     <header className="w-full bg-white shadow-md fixed top-0 left-0 z-50">
       <nav className="max-w-screen-xl mx-auto px-4 lg:px-6 py-4 flex items-center gap-6">
-        {/* Logo */}
         <img src="/dicoding-logos.png" alt="Dicoding Logo" className="w-32" />
 
-        {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-6 ml-6 text-sm font-medium text-gray-700">
           {menuItems.map((item) => (
             <li key={item.name}>
@@ -47,12 +45,9 @@ export default function HeaderInsight() {
           ))}
         </ul>
 
-        {/* Right Section: Avatar + Bell + Hamburger */}
         <div className="flex items-center gap-4 ml-auto relative">
-          {/* Avatar */}
           <div className="relative w-10 h-10 flex items-center justify-center bg-gray-300 rounded-full border-[4px] border-cyan-300 text-white font-semibold text-lg select-none"></div>
 
-          {/* Chevron Dropdown */}
           <div className="relative">
             <button
               onClick={() => setOpenDropdown(!openDropdown)}
@@ -101,7 +96,6 @@ export default function HeaderInsight() {
             )}
           </div>
 
-          {/* Bell Icon */}
           <button
             className="relative hover:text-gray-700"
             aria-label="Notification Bell"
@@ -117,7 +111,6 @@ export default function HeaderInsight() {
             />
           </button>
 
-          {/* Hamburger (mobile) */}
           <button
             className="md:hidden text-gray-700 hover:text-blue-600"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -130,7 +123,6 @@ export default function HeaderInsight() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <ul className="md:hidden bg-white shadow-md w-full px-4 py-4 flex flex-col gap-4 text-sm font-medium text-gray-700">
           {menuItems.map((item) => (

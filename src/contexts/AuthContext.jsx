@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      setUser({ token }); 
+      setUser({ token });
     }
     setLoading(false);
   }, []);
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => setUser(userData);
 
   const logout = () => {
-    logoutService(); 
+    logoutService();
     setUser(null);
   };
 

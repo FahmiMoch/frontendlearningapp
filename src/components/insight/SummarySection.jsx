@@ -1,14 +1,43 @@
 import React from "react";
 
-function SummaryCard({ title, value, icon }) {
+function SummarySkeletonCard() {
   return (
-    <article className="w-full h-full bg-[#1c4465] text-white p-6 rounded-xl shadow flex flex-col justify-between">
+    <article
+      className="
+        w-full h-full bg-[#1c4465]/70 p-6 rounded-xl
+        animate-pulse
+      "
+    >
       <div className="flex items-center gap-3">
-        <div className="shrink-0 text-2xl">{icon}</div>
-        <p className="text-sm opacity-90">{title}</p>
+        <div className="w-10 h-10 rounded-lg bg-white/20" />
+        <div className="h-4 w-28 bg-white/20 rounded" />
       </div>
 
-      <h3 className="text-2xl font-bold mt-6">{value}</h3>
+      <div className="h-7 w-36 bg-white/30 rounded mt-6" />
+    </article>
+  );
+}
+
+function SummaryCard({ title, value, icon }) {
+  return (
+    <article
+      className="
+        w-full h-full bg-[#1c4465] text-white p-6 rounded-xl
+        shadow
+        flex flex-col justify-between
+        transition-all duration-300 ease-out
+        hover:-translate-y-1 hover:shadow-xl hover:bg-[#1f4f76]
+      "
+    >
+      <div className="flex items-center gap-3">
+        <div className="shrink-0 p-2 rounded-lg bg-white/10 border border-white/20">
+          {icon}
+        </div>
+
+        <p className="text-sm opacity-90 tracking-wide">{title}</p>
+      </div>
+
+      <h3 className="text-2xl font-bold mt-6 tracking-tight">{value}</h3>
     </article>
   );
 }
@@ -16,7 +45,13 @@ function SummaryCard({ title, value, icon }) {
 export default function SummarySection({ userReport, loading }) {
   if (loading) {
     return (
-      <div className="text-center py-10 text-gray-400">Loading summary...</div>
+      <section className="mt-10">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <SummarySkeletonCard key={i} />
+          ))}
+        </div>
+      </section>
     );
   }
 
@@ -33,7 +68,7 @@ export default function SummarySection({ userReport, loading }) {
     },
     {
       title: "Nilai Ujian",
-      value: `85 / 100`,
+      value: "85 / 100",
     },
     {
       title: "Gaya Belajar",
@@ -45,10 +80,10 @@ export default function SummarySection({ userReport, loading }) {
     <svg
       key="clock"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      viewBox="0 0 24 24"
       strokeWidth={1.5}
+      stroke="currentColor"
       className="w-6 h-6"
     >
       <path
@@ -61,10 +96,10 @@ export default function SummarySection({ userReport, loading }) {
     <svg
       key="calendar"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      viewBox="0 0 24 24"
       strokeWidth={1.5}
+      stroke="currentColor"
       className="w-6 h-6"
     >
       <path
@@ -77,10 +112,10 @@ export default function SummarySection({ userReport, loading }) {
     <svg
       key="chart"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      viewBox="0 0 24 24"
       strokeWidth={1.5}
+      stroke="currentColor"
       className="w-6 h-6"
     >
       <path
@@ -93,10 +128,10 @@ export default function SummarySection({ userReport, loading }) {
     <svg
       key="brain"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      viewBox="0 0 24 24"
       strokeWidth={1.5}
+      stroke="currentColor"
       className="w-6 h-6"
     >
       <path

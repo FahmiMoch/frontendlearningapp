@@ -9,62 +9,69 @@ export default function Learning() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      try {
+        setLoading(true);
+        const journeys = await getJourneys();
 
-      const journeys = await getJourneys();
-      if (journeys.length > 0) {
-        const tutorialsData = await getJourneyTutorials(journeys[0].id);
-        setTutorials(tutorialsData);
+        if (journeys && journeys.length > 0) {
+          const tutorialsData = await getJourneyTutorials(journeys[0].id);
+          setTutorials(tutorialsData || []);
+        }
+      } catch (error) {
+        console.error("Failed to fetch learning data:", error);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
     fetchData();
   }, []);
 
   const handleViewDetail = async (journeyId) => {
-    setSelectedJourney(journeyId);
     try {
+      setSelectedJourney(journeyId);
       const journeys = await getJourneys();
-      const detail = journeys.find((j) => j.id === journeyId);
-      setJourneyDetail(detail);
-    } catch (err) {
-      console.error("Failed to fetch journey detail:", err);
+      const detail = journeys?.find((j) => j.id === journeyId);
+      setJourneyDetail(detail || null);
+    } catch (error) {
+      console.error("Failed to fetch journey detail:", error);
       setJourneyDetail(null);
     }
   };
 
   return (
-    <article className="bg-white p-4 rounded-xl shadow-md relative">
-      <h2 className="font-semibold mb-3 flex items-center gap-2 text-base md:text-md">
-        <span className="w-5 h-5 bg-gray-200 rounded-md inline-block"></span>
+    <article className="relative bg-white p-4 rounded-xl shadow-md min-h-[400px]">
+      <h2 className="flex items-center gap-2 mb-3 font-semibold text-base md:text-lg">
+        <span className="w-5 h-5 rounded-md bg-gray-200" />
         Aktivitas belajar
       </h2>
-      <div className="h-px bg-gray-200 w-full mb-4"></div>
+
+      <div className="w-full h-px bg-gray-300 mb-4" />
 
       {loading ? (
-        <div className="space-y-3">
-          <div className="animate-pulse h-8 bg-gray-300 rounded w-full"></div>
-          <div className="animate-pulse h-8 bg-gray-300 rounded w-full"></div>
-          <div className="animate-pulse h-8 bg-gray-300 rounded w-full"></div>
-          <div className="animate-pulse h-8 bg-gray-300 rounded w-full"></div>
+        <div className="p-2 rounded-xl bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse">
+          <div className="h-4 w-3/4 rounded bg-gray-300 mb-3" />
+          <div className="h-3 w-1/4 rounded bg-gray-300" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:flex lg:flex-col">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
           {tutorials.length > 0 ? (
             tutorials.map((t) => (
               <div
                 key={t.id}
-                className="bg-gray-200 p-4 rounded-lg text-black flex flex-col justify-between shadow hover:shadow-lg transition duration-200"
+                className="group p-2 rounded-xl bg-gradient-to-br 
+                           from-gray-100 to-gray-200"
               >
-                <span className="font-medium text-sm">{t.title}</span>
+                <p className="text-sm font-semibold text-gray-800 line-clamp-2">
+                  {t.title}
+                </p>
 
                 <button
-                  className="text-[#0052D5] text-[10px] mt-1 underline self-start"
                   onClick={() => handleViewDetail(t.journeyId || 1)}
+                  className="mt-3 text-xs font-semibold text-[#0052D5] 
+                             opacity-80 underline"
                 >
-                  Lihat Detail
+                  Lihat Detail →
                 </button>
               </div>
             ))
@@ -75,25 +82,36 @@ export default function Learning() {
       )}
 
       {selectedJourney && journeyDetail && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setSelectedJourney(null)}
-          ></div>
+          />
 
-          <div className="bg-white rounded-2xl shadow-2xl z-10 max-w-md w-full p-6 animate-fadeIn">
-            <h3 className="font-bold text-xl text-gray-800">
-              {journeyDetail.name}
-            </h3>
-            <p className="text-gray-600 mt-3">{journeyDetail.summary}</p>
-            <div className="mt-4 flex justify-between text-xs text-gray-500 font-medium">
-              <span>Point: {journeyDetail.point}</span>
-              <span>XP: {journeyDetail.xp}</span>
-              <span>Status: {journeyDetail.status}</span>
+          <div className="relative z-10 w-full max-w-md p-6 bg-white rounded-3xl shadow-2xl animate-fadeIn">
+            <div className="flex items-start justify-between">
+              <h3 className="text-xl font-bold text-gray-800">
+                {journeyDetail.name}
+              </h3>
+              <span
+                className="px-3 py-1 text-xs font-semibold rounded-full 
+                               bg-yellow-100 text-yellow-700"
+              >
+                On Going
+              </span>
             </div>
+
+            <div className="my-4 h-px bg-gray-200" />
+
+            <p className="text-sm text-gray-600 leading-relaxed">
+              {journeyDetail.summary}
+            </p>
+
             <button
-              className="mt-6 w-full bg-[#033E5F] text-white py-2 rounded-xl font-semibold transition duration-200"
               onClick={() => setSelectedJourney(null)}
+              className="mt-6 w-full py-2.5 rounded-xl font-semibold 
+                         bg-[#033E5F]
+                         text-white transition"
             >
               Tutup
             </button>

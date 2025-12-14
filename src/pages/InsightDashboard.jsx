@@ -14,23 +14,13 @@ export default function InsightDashboard() {
   const [userReport, setUserReport] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // =====================================================
-  // USER INFO (SINGLE SOURCE – untuk UI)
-  // NOTE:
-  // - Ambil di parent
-  // - Jangan ambil localStorage di child component
-  // =====================================================
   const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
   const userName = storedUser.display_name || "User";
 
-  // =====================================================
-  // EFFECT: Ambil userId dari JWT token
-  // =====================================================
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      // FIX: kalau token tidak ada, stop loading
       setLoading(false);
       return;
     }
@@ -39,15 +29,11 @@ export default function InsightDashboard() {
       const payload = JSON.parse(atob(token.split(".")[1]));
       setUserId(payload.userId);
     } catch (err) {
-      // FIX: parsing error harus menghentikan loading
       console.error("Failed to parse token:", err);
       setLoading(false);
     }
   }, []);
 
-  // =====================================================
-  // EFFECT: Fetch user report (SINGLE SOURCE OF TRUTH)
-  // =====================================================
   useEffect(() => {
     if (!userId) return;
 
@@ -70,34 +56,9 @@ export default function InsightDashboard() {
   return (
     <div className="min-h-screen w-full bg-[#f8f8f8] text-gray-900">
       <HeaderInsight />
-
-      {/* 
-        FIX:
-        Spacer diganti padding di main
-        Lebih semantik & rapi
-      */}
       <main className="max-w-6xl mx-auto px-4 pt-[100px]">
-        {/* =================================================
-            REPORT
-            - Pure presentational
-            - userName DIKIRIM dari parent
-        ================================================= */}
         <Report userReport={userReport} loading={loading} userName={userName} />
-
-        {/* =================================================
-            SUMMARY
-            NOTE:
-            - Sekarang terima userReport
-            - Idealnya TIDAK fetch API sendiri
-        ================================================= */}
         <SummarySection userReport={userReport} loading={loading} />
-
-        {/* =================================================
-            CHART
-            FIX:
-            - Jangan render error saat loading
-            - userId konsisten dari state
-        ================================================= */}
         {loading ? (
           <div className="text-center py-6 text-gray-400">
             Loading chart data...
@@ -109,12 +70,6 @@ export default function InsightDashboard() {
             ⚠️ Journey data not available
           </div>
         )}
-
-        {/* =================================================
-            LEARNING STYLE
-            FIX:
-            - Konsisten pakai userReport
-        ================================================= */}
         <LearningStyleSection userReport={userReport} loading={loading} />
 
         <RecommendationSection userReport={userReport} loading={loading} />

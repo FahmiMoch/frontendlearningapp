@@ -9,6 +9,6 @@ export const getMLPrediction = async (payload) => {
       "getMLPrediction error:",
       error.response?.data || error.message,
     );
-    return null; 
+    return null;
   }
 };

@@ -1,4 +1,4 @@
-import axios from "./api"; 
+import axios from "./api";
 
 export const recordStudyDuration = async (journeyId, durationInSeconds) => {
   try {
@@ -11,7 +11,6 @@ export const recordStudyDuration = async (journeyId, durationInSeconds) => {
     return null;
   }
 };
-
 
 export const getJourneys = async () => {
   try {

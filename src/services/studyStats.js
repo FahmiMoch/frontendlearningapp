@@ -3,7 +3,7 @@ import axios from "axios";
 export const getUserStudyStats = async (userId) => {
   try {
     const res = await axios.get(
-      `${import.meta.env.VITE_API_URL}/ml-predictions/user/${userId}/latest`
+      `${import.meta.env.VITE_API_URL}/ml-predictions/user/${userId}/latest`,
     );
 
     const userData = res.data.data || {};
@@ -24,4 +24,3 @@ export const getUserStudyStats = async (userId) => {
     return null;
   }
 };
-

@@ -1,35 +1,56 @@
 import React from "react";
 
-// =====================================================
-// TYPE CARD (PRESENTATIONAL)
-// =====================================================
 function TypeCard({ title, icon, desc }) {
   return (
-    <article className="w-full bg-white p-5 sm:p-6 rounded-xl shadow flex gap-5 flex-col sm:flex-row">
-      <div className="shrink-0">{icon}</div>
+    <article
+      className="
+        group w-full
+        bg-white border border-slate-100
+        p-6 rounded-2xl shadow-sm
+        flex gap-5 flex-col sm:flex-row
+        transition-all duration-300
+        hover:shadow-lg hover:-translate-y-0.5
+      "
+    >
+      <div
+        className="
+          shrink-0 w-12 h-12 rounded-xl
+          bg-[#0A6A8D]/10 text-[#0A6A8D]
+          flex items-center justify-center
+          group-hover:bg-[#0A6A8D]/15
+        "
+      >
+        {icon}
+      </div>
 
-      <div className="flex-1 mt-3 sm:mt-0">
-        <h3 className="font-semibold text-base sm:text-lg text-gray-900">
+      <div className="flex-1">
+        <h3 className="font-semibold text-base sm:text-lg text-slate-900">
           {title}
         </h3>
-        <p className="text-sm text-gray-600 mt-1 leading-relaxed">{desc}</p>
+        <p className="text-sm text-slate-600 mt-1 leading-relaxed">{desc}</p>
+      </div>
+    </article>
+  );
+}
+
+function TypeSkeleton() {
+  return (
+    <article className="w-full p-6 rounded-2xl bg-slate-100 animate-pulse">
+      <div className="flex gap-5 items-start">
+        <div className="w-12 h-12 rounded-xl bg-slate-200" />
+        <div className="flex-1 space-y-2">
+          <div className="h-4 w-40 bg-slate-200 rounded" />
+          <div className="h-3 w-full bg-slate-200 rounded" />
+          <div className="h-3 w-2/3 bg-slate-200 rounded" />
+        </div>
       </div>
     </article>
   );
 }
 
 export default function LearningStyleSection({ userReport, loading }) {
-  // =====================================================
-  // ICON BASE STYLE
-  // =====================================================
-  const iconClass = "size-6 text-[#0A6A8D]";
+  const iconClass = "w-6 h-6";
 
-  // =====================================================
-  // FALLBACK LEARNING STYLES
-  // NOTE:
-  // - Dipakai saat ML belum tersedia
-  // - UI tetap hidup walau tanpa data
-  // =====================================================
   const FALLBACK_TYPES = [
     {
       title: "Fast Learner",
@@ -98,22 +119,35 @@ export default function LearningStyleSection({ userReport, loading }) {
 
   if (loading) {
     return (
-      <div className="text-center py-10 text-gray-400">
-        Loading learning style...
-      </div>
+      <section className="max-w-6xl mx-auto mt-10 space-y-4">
+        {[1, 2, 3].map((i) => (
+          <TypeSkeleton key={i} />
+        ))}
+      </section>
     );
   }
 
   return (
-    <section className="max-w-6xl mx-auto mt-10 space-y-4">
-      {learningTypes.map((type) => (
-        <TypeCard
-          key={type.title}
-          title={type.title}
-          icon={type.icon}
-          desc={type.desc}
-        />
-      ))}
+    <section className="max-w-6xl mx-auto mt-10">
+      <header className="mb-6">
+        <h2 className="text-lg font-semibold text-slate-800">
+          Gaya Belajar Kamu
+        </h2>
+        <p className="text-sm text-slate-500">
+          Analisis pola belajar berdasarkan aktivitas mingguan
+        </p>
+      </header>
+
+      <div className="space-y-4">
+        {learningTypes.map((type) => (
+          <TypeCard
+            key={type.title}
+            title={type.title}
+            icon={type.icon}
+            desc={type.desc}
+          />
+        ))}
+      </div>
     </section>
   );
 }
